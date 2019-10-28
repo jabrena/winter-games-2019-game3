@@ -37,6 +37,8 @@
         <vavr.version>0.10.2</vavr.version>
 
         <spring-cloud.version>Hoxton.RC1</spring-cloud.version>
+
+		<spring.cloud.contract.verifier.skip>true</spring.cloud.contract.verifier.skip>
 	</properties>
 
 	<dependencies>

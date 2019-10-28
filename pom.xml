@@ -39,6 +39,7 @@
         <spring-cloud.version>Hoxton.RC1</spring-cloud.version>
 
 		<spring.cloud.contract.verifier.skip>true</spring.cloud.contract.verifier.skip>
+		<yavi.version>0.2.5</yavi.version>
 	</properties>
 
 	<dependencies>
@@ -78,6 +79,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>am.ik.yavi</groupId>
+			<artifactId>yavi</artifactId>
+			<version>${yavi.version}</version>
 		</dependency>
 
 		<dependency>

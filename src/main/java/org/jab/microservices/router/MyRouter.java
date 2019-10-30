@@ -1,6 +1,5 @@
 package org.jab.microservices.router;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -9,7 +8,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 
-@Slf4j
 public class MyRouter {
 
     public RouterFunction<ServerResponse> myRoutes(MyHandler myHandler) {

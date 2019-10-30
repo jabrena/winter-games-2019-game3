@@ -6,7 +6,7 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @Configuration
-public class SecurityConfiguration {
+public class SecurityTestConfiguration {
 
   @Bean
   public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {

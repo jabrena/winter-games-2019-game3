@@ -1,4 +1,4 @@
-package org.jab.microservices.handler;
+package org.jab.microservices.router;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.reactive.function.server.ServerRequest;

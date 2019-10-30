@@ -1,6 +1,6 @@
 package org.jab.microservices.config;
 
-import org.jab.microservices.handler.MyHandler;
+import org.jab.microservices.router.MyHandler;
 import org.jab.microservices.router.MyRouter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +19,6 @@ public class WebConfig {
 
     @Bean
     public RouterFunction<ServerResponse> myRoutes (MyHandler myHandler) {
-        return new MyRouter().myroutes(myHandler);
+        return new MyRouter().myRoutes(myHandler);
     }
 }

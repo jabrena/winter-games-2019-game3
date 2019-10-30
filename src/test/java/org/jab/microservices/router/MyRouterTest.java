@@ -1,42 +1,68 @@
 package org.jab.microservices.router;
 
-import org.jab.microservices.handler.MyHandler;
-import org.jab.microservices.handler.MyResponse;
-import org.junit.jupiter.api.Disabled;
+import org.jab.microservices.config.WebConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
 
-import static org.mockito.BDDMockito.given;
+import static org.assertj.core.api.BDDAssertions.then;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWebTestClient
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@WebFluxTest({MyRouter.class, SecurityTestConfiguration.class, WebConfig.class})
 public class MyRouterTest {
 
-    @SpyBean
-    private MyHandler handler;
-
     @Autowired
-    private WebTestClient testClient;
+    private WebTestClient webTestClient;
 
-    @Disabled
     @Test
-    public void Given_a_request_When_both_cloudFoundry_installations_has_expected_versions_Then_return_true() {
+    public void given_MyRouter_when_callEndpoint_then_expectedResult_Test() {
 
-        //given(handler.getEndpoint()).willReturn(Mono.just(true));
-
-        testClient.get()
-                .uri("/api/version")
+        webTestClient.get()
+                .uri("/api/endpoint")
+                .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .expectStatus()
-                .isOk()
+                .expectStatus().isOk()
                 .expectBody(MyResponse.class)
-                .isEqualTo(new MyResponse(true));
+                .value(myResponse -> {
+                            then(myResponse.isStatus()).isEqualTo(true);
+                        }
+                );
     }
 
+    @Test
+    public void given_MyRouter_when_callLevel1_then_expectedResult_Test() {
+
+        webTestClient.get()
+                .uri("/api/endpoint/level1")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(MyResponse.class)
+                .value(myResponse -> {
+                            then(myResponse.isStatus()).isEqualTo(true);
+                        }
+                );
+    }
+
+    @Test
+    public void given_MyRouter_when_callLevel2_then_expectedResult_Test() {
+
+        webTestClient.get()
+                .uri("/api/endpoint/level1/level2")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(MyResponse.class)
+                .value(myResponse -> {
+                            then(myResponse.isStatus()).isEqualTo(true);
+                        }
+                );
+    }
 }

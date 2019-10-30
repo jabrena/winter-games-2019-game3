@@ -1,4 +1,4 @@
-package org.jab.microservices.handler;
+package org.jab.microservices.router;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -41,7 +41,7 @@ public class MyHandler {
         return ServerResponse
                 .ok()
                 .contentType(APPLICATION_JSON)
-                .body(Flux.fromIterable(getGods2()), String.class);
+                .body(Flux.fromIterable(getGods2()), ArrayList.class);
     }
 
     public Mono<ServerResponse> getLevel1(ServerRequest serverRequest) {

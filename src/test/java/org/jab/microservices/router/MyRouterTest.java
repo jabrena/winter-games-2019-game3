@@ -55,7 +55,6 @@ public class MyRouterTest {
                 });
     }
 
-    @Disabled
     @Test
     public void given_MyRouter_when_callLevel1_then_expectedResult_Test() {
 
@@ -64,9 +63,10 @@ public class MyRouterTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(MyResponse2.class)
+                .expectBody(MyResponse2Test.class)
                 .value(myResponse -> {
-                            then(myResponse).isEqualTo(new MyResponse2(new ArrayList<String>()));
+                            then(myResponse)
+                            .isEqualTo(new MyResponse2Test(List.of("Zeus",  "Hera",  "Poseidon",  "Demeter",  "Ares",  "Athena",  "Apollo",  "Artemis",  "Hephaestus",  "Aphrodite",  "Hermes",  "Dionysus",  "Hades",  "Hypnos",  "Nike",  "Janus",  "Nemesis",  "Iris",  "Hecate",  "Tyche")));
                         }
                 );
     }

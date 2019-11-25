@@ -10,7 +10,4 @@ public class MyResponse2 {
 
     private final List<String> list;
 
-    public void MyResponse2() {
-
-    }
 }

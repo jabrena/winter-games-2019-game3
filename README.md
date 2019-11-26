@@ -19,4 +19,8 @@ Java + Webflux + Reactor + VAVR + YAVI
 ## References
 
 - https://programmer.help/blogs/webflux-rest-api-global-exception-handling-error-handling.html
+- https://blog.softwaremill.com/spring-webflux-and-domain-exceptions-10ae2096b159
+- https://www.naturalprogrammer.com/courses/332639/lectures/5902512
+- https://medium.com/@ldduy1006/spring-webflux-security-configuration-28ac86423a42
+
  

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jab.microservices.config.SecurityConfig;
 import org.jab.microservices.config.WebConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +25,7 @@ import static org.jab.microservices.config.AuthFilter.KEY_HEADER_1;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureWebTestClient
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@WebFluxTest({MyRouter.class, SecurityTestConfiguration.class, WebConfig.class})
+@WebFluxTest({MyRouter.class, WebConfig.class, SecurityConfig.class})
 public class MyRouterTest {
 
     @Autowired

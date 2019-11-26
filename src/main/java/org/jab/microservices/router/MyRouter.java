@@ -18,6 +18,8 @@ public class MyRouter {
                 .andRoute(GET("/api/endpoint/level1")
                         .and(accept(APPLICATION_JSON)), myHandler::getLevel1)
                 .andRoute(GET("/api/endpoint/level1/level2")
-                        .and(accept(APPLICATION_JSON)), myHandler::getLevel2);
+                        .and(accept(APPLICATION_JSON)), myHandler::getLevel2)
+                .andRoute(GET("/api/endpoint/boom")
+                    .and(accept(APPLICATION_JSON)), myHandler::getBoom);
     }
 }

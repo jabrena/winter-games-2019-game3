@@ -58,4 +58,8 @@ public class MyHandler {
                 .contentType(APPLICATION_JSON)
                 .body(Mono.just(new MyResponse(Boolean.TRUE)), MyResponse.class);
     }
+
+    public Mono<ServerResponse> getBoom(ServerRequest serverRequest) {
+        throw new RuntimeException("Katakroker");
+    }
 }

@@ -3,13 +3,11 @@ package org.jab.microservices.router;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Try;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.jab.microservices.config.WebConfig;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.jab.microservices.config.AuthFilter.KEY_HEADER_1;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -40,19 +39,50 @@ public class MyRouterTest {
         throw new RuntimeException(ex);
     });
 
+    private String generateToken(int length) {
+
+        boolean useLetters = true;
+        boolean useNumbers = false;
+        String generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
+
+        return generatedString;
+    }
+
     @Test
     public void given_MyRouter_when_callEndpoint_then_expectedResult_Test() {
 
         webTestClient.get()
                 .uri("/api/endpoint")
+                .header(KEY_HEADER_1, generateToken(100))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .value(myResponse -> {
-                            then(serialize.apply(myResponse))
-                                    .isEqualTo(List.of("Zeus",  "Hera",  "Poseidon",  "Demeter",  "Ares",  "Athena",  "Apollo",  "Artemis",  "Hephaestus",  "Aphrodite",  "Hermes",  "Dionysus",  "Hades",  "Hypnos",  "Nike",  "Janus",  "Nemesis",  "Iris",  "Hecate",  "Tyche"));
+                    then(serialize.apply(myResponse))
+                            .isEqualTo(List.of("Zeus",  "Hera",  "Poseidon",  "Demeter",  "Ares",  "Athena",  "Apollo",  "Artemis",  "Hephaestus",  "Aphrodite",  "Hermes",  "Dionysus",  "Hades",  "Hypnos",  "Nike",  "Janus",  "Nemesis",  "Iris",  "Hecate",  "Tyche"));
                 });
+    }
+
+    @Test
+    public void given_MyRouter_when_callEndpointWithoutHeader_then_expectedResult_Test() {
+
+        webTestClient.get()
+                .uri("/api/endpoint")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isUnauthorized();
+    }
+
+    @Test
+    public void given_MyRouter_when_callBadHeader_then_expectedResult_Test() {
+
+        webTestClient.get()
+                .uri("/api/endpoint")
+                .header(KEY_HEADER_1, generateToken(99))
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isUnauthorized();
     }
 
     @Test
@@ -60,6 +90,7 @@ public class MyRouterTest {
 
         webTestClient.get()
                 .uri("/api/endpoint/level1")
+                .header(KEY_HEADER_1, generateToken(100))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -76,6 +107,7 @@ public class MyRouterTest {
 
         webTestClient.get()
                 .uri("/api/endpoint/level1/level2")
+                .header(KEY_HEADER_1, generateToken(100))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -85,4 +117,27 @@ public class MyRouterTest {
                         }
                 );
     }
+
+    @Test
+    public void given_MyRouter_when_callBadRequest_then_expectedResult_Test() {
+
+        webTestClient.get()
+                .uri("/api/endpointX")
+                .header(KEY_HEADER_1, generateToken(100))
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    public void given_MyRouter_when_triggerException_then_expectedResult_Test() {
+
+        webTestClient.get()
+                .uri("/api/endpoint/boom")
+                .header(KEY_HEADER_1, generateToken(100))
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().is5xxServerError();
+    }
+
 }
